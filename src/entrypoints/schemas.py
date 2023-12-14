@@ -5,3 +5,8 @@ from pydantic import BaseModel
 
 class HealthSchema(BaseModel):
     status: Literal['ok']
+
+
+class CategorySchema(BaseModel):
+    id: int
+    name: str
