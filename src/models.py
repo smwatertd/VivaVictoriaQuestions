@@ -25,7 +25,7 @@ class Question(Base):
     __tablename__ = 'questions'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    body: Mapped[str]
+    body: Mapped[str] = mapped_column(unique=True)
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
 
 
