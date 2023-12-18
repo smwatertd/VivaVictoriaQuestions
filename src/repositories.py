@@ -36,3 +36,12 @@ class QuestionsRepository(ABC):
     @abstractmethod
     async def all_by_category_id(self, category_id: int) -> list[Question]:
         pass
+
+
+class SQLAlchemyQuestionsRepository(QuestionsRepository):
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def all_by_category_id(self, category_id: int) -> list[Question]:
+        result = await self._session.execute(select(Question).where(Question.category_id == category_id))
+        return list(result.scalars().all())
