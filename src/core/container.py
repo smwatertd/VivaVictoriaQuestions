@@ -20,6 +20,14 @@ class Container(containers.DeclarativeContainer):
         services.CategoriesService,
     )  # type: ignore
 
+    questions_repository: Type[repositories.QuestionsRepository] = providers.Factory(
+        repositories.SQLAlchemyQuestionsRepository,
+    )  # type: ignore
+
+    questions_service: Type[services.QuestionsService] = providers.Factory(
+        services.QuestionsService,
+    )  # type: ignore
+
     unit_of_work: Type[UnitOfWork] = providers.Factory(
         SQLAlchemyUnitOfWork,
     )  # type: ignore
