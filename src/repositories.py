@@ -4,6 +4,7 @@ from models import Category, Question
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 
 class CategoriesRepository(ABC):
@@ -37,6 +38,10 @@ class QuestionsRepository(ABC):
     async def all_by_category_id(self, category_id: int) -> list[Question]:
         pass
 
+    @abstractmethod
+    async def get(self, id: int) -> Question:
+        pass
+
 
 class SQLAlchemyQuestionsRepository(QuestionsRepository):
     def __init__(self, session: AsyncSession) -> None:
@@ -45,3 +50,16 @@ class SQLAlchemyQuestionsRepository(QuestionsRepository):
     async def all_by_category_id(self, category_id: int) -> list[Question]:
         result = await self._session.execute(select(Question).where(Question.category_id == category_id))
         return list(result.scalars().all())
+
+    async def get(self, id: int) -> Question:
+        result = await self._session.execute(
+            select(Question)
+            .where(Question.id == id)
+            .options(
+                joinedload(Question.answers),
+            ),
+        )
+        question = result.unique().scalars().one_or_none()
+        if question is None:
+            raise ValueError(f'Question with id {id} not found')
+        return question
