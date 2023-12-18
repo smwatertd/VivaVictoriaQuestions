@@ -12,6 +12,11 @@ class CategorySchema(BaseModel):
     name: str
 
 
+class QuestionByCategorySchema(BaseModel):
+    id: int
+    body: str
+
+
 class AnswerSchema(BaseModel):
     id: int
     body: str
