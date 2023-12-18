@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from models import Category
+from models import Category, Question
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,3 +30,9 @@ class SQLAlchemyCategoriesRepository(CategoriesRepository):
         if category is None:
             raise ValueError(f'Category with id {id} not found')
         return category
+
+
+class QuestionsRepository(ABC):
+    @abstractmethod
+    async def all_by_category_id(self, category_id: int) -> list[Question]:
+        pass
