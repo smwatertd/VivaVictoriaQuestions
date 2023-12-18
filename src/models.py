@@ -19,3 +19,11 @@ class Question(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     body: Mapped[str]
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
+
+
+class Answer(Base):
+    __tablename__ = 'answers'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    body: Mapped[str]
+    question_id: Mapped[int] = mapped_column(ForeignKey('questions.id'))
