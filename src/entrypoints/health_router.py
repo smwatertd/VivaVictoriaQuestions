@@ -1,6 +1,6 @@
-from entrypoints.schemas import HealthSchema
-
 from fastapi import APIRouter
+
+from schemas import HealthSchema
 
 
 router = APIRouter(
@@ -9,5 +9,5 @@ router = APIRouter(
 
 
 @router.get('/health', status_code=200, response_model=HealthSchema)
-def check_health() -> HealthSchema:
+async def check_health() -> HealthSchema:
     return HealthSchema(status='ok')
