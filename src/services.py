@@ -23,10 +23,16 @@ class QuestionsService:
     ) -> list[schemas.QuestionByCategorySchema]:
         async with uow:
             category = await uow.categories.get(category_id)
-            questions = await uow.questions.all_by_category_id(category.id)
+            questions = await uow.questions.get_all_by_category_id(category.id)
             return [schemas.QuestionByCategorySchema(id=question.id, body=question.body) for question in questions]
 
     async def get(self, id: int, uow: UnitOfWork) -> schemas.QuestionSchema:
         async with uow:
             question = await uow.questions.get(id)
+            return question.to_schema()
+
+    async def get_random_question_by_category_id(self, category_id: int, uow: UnitOfWork) -> schemas.QuestionSchema:
+        async with uow:
+            category = await uow.categories.get(category_id)
+            question = await uow.questions.get_random_by_category_id(category.id)
             return question.to_schema()
