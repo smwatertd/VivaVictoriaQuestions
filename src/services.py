@@ -1,12 +1,13 @@
-class Category:
-    def __init__(self, id: int, name: str) -> None:
-        self.id = id
-        self.name = name
+from schemas import CategorySchema
+
+from unit_of_work import UnitOfWork
 
 
-async def get_all_categories() -> list[Category]:
-    return [Category(id=i, name=f'Category {i}') for i in range(10)]
+class CategoriesService:
+    async def get_all_categories(self, uow: UnitOfWork) -> list[CategorySchema]:
+        categories = await uow.categories.get_all()
+        return [category.to_schema() for category in categories]
 
-
-async def get_category(category_id: int) -> Category:
-    return Category(id=category_id, name=f'Category {category_id}')
+    async def get_category(self, category_id: int, uow: UnitOfWork) -> CategorySchema:
+        category = await uow.categories.get(category_id)
+        return category.to_schema()
