@@ -1,6 +1,6 @@
 from typing import Annotated
 
-import dependencies
+from entrypoints import dependencies
 
 from fastapi import APIRouter, Depends
 
