@@ -25,3 +25,8 @@ class QuestionsService:
             category = await uow.categories.get(category_id)
             questions = await uow.questions.all_by_category_id(category.id)
             return [schemas.QuestionByCategorySchema(id=question.id, body=question.body) for question in questions]
+
+    async def get(self, id: int, uow: UnitOfWork) -> schemas.QuestionSchema:
+        async with uow:
+            question = await uow.questions.get(id)
+            return question.to_schema()
