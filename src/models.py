@@ -1,3 +1,5 @@
+from schemas import CategorySchema
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -11,6 +13,12 @@ class Category(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
+
+    def __repr__(self) -> str:
+        return f'Category(id={self.id}, name={self.name})'
+
+    def to_schema(self) -> CategorySchema:
+        return CategorySchema(id=self.id, name=self.name)
 
 
 class Question(Base):
