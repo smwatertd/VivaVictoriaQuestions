@@ -26,7 +26,7 @@ class SQLAlchemyCategoriesRepository(CategoriesRepository):
 
     async def get(self, id: int) -> Category:
         result = await self._session.execute(select(Category).where(Category.id == id))
-        category = result.one_or_none()
+        category = result.scalars().one_or_none()
         if category is None:
             raise ValueError(f'Category with id {id} not found')
         return category
