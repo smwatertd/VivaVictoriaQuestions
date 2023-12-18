@@ -1,6 +1,6 @@
-from entrypoints.schemas import HealthSchema
-
 from fastapi import APIRouter
+
+from schemas import HealthSchema
 
 
 router = APIRouter(
