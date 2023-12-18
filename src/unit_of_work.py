@@ -17,6 +17,7 @@ DEFAULT_SESSION_MAKER = async_sessionmaker(
 
 class UnitOfWork(ABC):
     categories: repositories.CategoriesRepository
+    questions: repositories.QuestionsRepository
 
     async def __aenter__(self) -> 'UnitOfWork':
         return self
@@ -40,6 +41,7 @@ class SQLAlchemyUnitOfWork(UnitOfWork):
     async def __aenter__(self) -> UnitOfWork:
         self._session = self._session_factory()
         self.categories = repositories.SQLAlchemyCategoriesRepository(self._session)
+        self.questions = repositories.SQLAlchemyQuestionsRepository(self._session)
         return await super().__aenter__()
 
     async def rollback(self) -> None:
