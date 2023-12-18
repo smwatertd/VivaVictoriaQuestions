@@ -40,3 +40,9 @@ class Answer(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey('questions.id'))
 
     question: Mapped['Question'] = relationship('Question', back_populates='answers')
+
+    def __repr__(self) -> str:
+        return f'Answer(id={self.id}, body={self.body}, is_correct={self.is_correct})'
+
+    def to_schema(self) -> schemas.AnswerSchema:
+        return schemas.AnswerSchema(id=self.id, body=self.body, is_correct=self.is_correct)

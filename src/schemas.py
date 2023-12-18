@@ -10,3 +10,9 @@ class HealthSchema(BaseModel):
 class CategorySchema(BaseModel):
     id: int
     name: str
+
+
+class AnswerSchema(BaseModel):
+    id: int
+    body: str
+    is_correct: bool
