@@ -30,6 +30,16 @@ class Question(Base):
 
     answers: Mapped[list['Answer']] = relationship('Answer', back_populates='question')
 
+    def _repr__(self) -> str:
+        return f'Question(id={self.id}, body={self.body})'
+
+    def to_schema(self) -> schemas.QuestionSchema:
+        return schemas.QuestionSchema(
+            id=self.id,
+            body=self.body,
+            answers=[answer.to_schema() for answer in self.answers],
+        )
+
 
 class Answer(Base):
     __tablename__ = 'answers'
