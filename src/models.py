@@ -1,7 +1,7 @@
-from schemas import CategorySchema
+import schemas
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
@@ -17,8 +17,8 @@ class Category(Base):
     def __repr__(self) -> str:
         return f'Category(id={self.id}, name={self.name})'
 
-    def to_schema(self) -> CategorySchema:
-        return CategorySchema(id=self.id, name=self.name)
+    def to_schema(self) -> schemas.CategorySchema:
+        return schemas.CategorySchema(id=self.id, name=self.name)
 
 
 class Question(Base):
@@ -28,10 +28,15 @@ class Question(Base):
     body: Mapped[str] = mapped_column(unique=True)
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
 
+    answers: Mapped[list['Answer']] = relationship('Answer', back_populates='question')
+
 
 class Answer(Base):
     __tablename__ = 'answers'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     body: Mapped[str]
+    is_correct: Mapped[bool] = mapped_column(default=False)
     question_id: Mapped[int] = mapped_column(ForeignKey('questions.id'))
+
+    question: Mapped['Question'] = relationship('Question', back_populates='answers')
