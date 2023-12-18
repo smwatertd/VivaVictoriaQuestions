@@ -6,7 +6,7 @@ from unit_of_work import UnitOfWork
 
 
 def get_unit_of_work() -> UnitOfWork:
-    return container.unit_of_work
+    return container.unit_of_work()
 
 
 def get_categories_service() -> CategoriesService:
